@@ -1,14 +1,32 @@
 import { useReducer } from 'react';
 import './styles.css';
 
-function reducer(state, action) {
-
+// defining these here to avoid hardcoding the operations
+const ACTIONS = {
+  ADD_DIGIT: "add-digit",
+  CHOOSE_OPERATION: "choose-operation",
+  CLEAR: "clear",
+  DELETE_DIGIT: "delete-digit",
+  EVALUATE: "evaluate"
 }
+
+function reducer(state, {type, payload}) {
+  // reducers usually have a switch statement
+  switch(type) {
+    case ACTIONS.ADD_DIGIT:
+      return {
+        ...state,
+        // or statement is to make sure if current_O is null for somereason
+        currentOperand: `${currentOperand || ""}${payload.digit}`,
+      }
+  }
+}
+//13:25
 
 function App() {
   const[{currentOperand, previousOperand, operation}, dispatch] = useReducer(reducer, {})
 
-
+  dispatch({type: ACTIONS.ADD_DIGIT, payload: { digit: 1 }})
   return (
     <div className="calculator-grid">
       <div className="output">
