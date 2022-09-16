@@ -1,3 +1,6 @@
+# Goals for this project
+I began this project in order to familiarize myself with react, particularily reducer.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
