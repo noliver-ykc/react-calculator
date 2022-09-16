@@ -26,7 +26,7 @@ body {
 .calculator-grid > button:hover,
 .calculator-grid > button:focus {
   /* focus targets when clicked */
-  background-color: rgb(232, 238, 244);
+  background-color: rgb(19, 144, 212);
 }
 
 .span-two {
@@ -63,7 +63,9 @@ body {
   color: rgb(19, 144, 212);
   font-weight: 600;
 }
-
+.operator:focus, .operator:hover {
+  background-color: white !important;
+}
 .output .previous-operand {
   padding-top: 1.5em;
   color: white;
