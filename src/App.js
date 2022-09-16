@@ -1,56 +1,129 @@
 import { useReducer } from 'react';
+import DigitButton from './DigitButton';
 import './styles.css';
 
 // defining these here to avoid hardcoding the operations
-const ACTIONS = {
+export const ACTIONS = {
   ADD_DIGIT: "add-digit",
   CHOOSE_OPERATION: "choose-operation",
   CLEAR: "clear",
   DELETE_DIGIT: "delete-digit",
-  EVALUATE: "evaluate"
+  EVALUATE: "evaluate",
 }
 
-function reducer(state, {type, payload}) {
-  // reducers usually have a switch statement
-  switch(type) {
+function reducer(state, { type, payload }) {
+  switch (type) {
     case ACTIONS.ADD_DIGIT:
+      // you cant start with more than one 0
+      if (payload.digit === "0" && state.currentOperand === "0") {
+        return state
+      }
+      // you cant have more than one decimal point per entry
+      if (payload.digit === "." && state.currentOperand.includes(".")) {
+        return state
+      }
       return {
         ...state,
-        // or statement is to make sure if current_O is null for somereason
-        currentOperand: `${currentOperand || ""}${payload.digit}`,
+        currentOperand: `${state.currentOperand || ""}${payload.digit}`,
       }
+    case ACTIONS.CHOOSE_OPERATION:
+      if (state.currentOperand == null && state.previousOperand == null) {
+        return state
+      }
+
+      if (state.currentOperand == null) {
+        return {
+          ...state,
+          operation: payload.operation,
+        }
+      }
+
+      if (state.previousOperand == null) {
+        return {
+          ...state,
+          operation: payload.operation,
+          previousOperand: state.currentOperand,
+          currentOperand: null,
+        }
+      }
+    case ACTIONS.CLEAR:
+      return {}
+
+
   }
 }
-//13:25
+
 
 function App() {
-  const[{currentOperand, previousOperand, operation}, dispatch] = useReducer(reducer, {})
+  const [{currentOperand, previousOperand, operation }, dispatch] = useReducer(
+    reducer,
+    {}
+  )
 
-  dispatch({type: ACTIONS.ADD_DIGIT, payload: { digit: 1 }})
   return (
     <div className="calculator-grid">
       <div className="output">
         <div className="previous-operand">{previousOperand} {operation}</div>
         <div className="current-operand">{currentOperand}</div>
       </div>
-      <button className="span-two operator">AC</button>
-      <button className='operator'>DEL</button>
-      <button className='operator'>÷</button>
-      <button>1</button>
-      <button>2</button>
-      <button>3</button>
-      <button className='operator'>*</button>
-      <button>4</button>
-      <button>5</button>
-      <button>6</button>
-      <button className='operator'>+</button>
-      <button>7</button>
-      <button>8</button>
-      <button>9</button>
-      <button className='operator'>-</button>
-      <button className='bottom-left-curve operator'>.</button>
-      <button>0</button>
-      <button className="span-two bottom-right-curve operator">=</button>
+      <button
+        className="span-two operator"
+        onClick={() => dispatch({ type: ACTIONS.CLEAR })}
+      >
+        AC
+      </button>
+      <button
+        className="operator"
+        onClick={() => dispatch({ type: ACTIONS.CHOOSE_OPERATION, payload: { operator: "DEL" } })}
+
+      >DEL
+      </button>
+      <button
+        className="operator"
+        onClick={() => dispatch({ type: ACTIONS.CHOOSE_OPERATION, payload: { operator: "÷" } })}
+
+      >÷
+      </button>
+      <DigitButton digit="1" dispatch={dispatch} />
+      <DigitButton digit="2" dispatch={dispatch} />
+      <DigitButton digit="3" dispatch={dispatch} />
+      <button
+        className="operator"
+        onClick={() => dispatch({ type: ACTIONS.CHOOSE_OPERATION, payload: { operator: "*" } })}
+
+      >*
+      </button>
+      <DigitButton digit="4" dispatch={dispatch} />
+      <DigitButton digit="5" dispatch={dispatch} />
+      <DigitButton digit="6" dispatch={dispatch} />
+      <button
+        className="operator"
+        onClick={() => dispatch({ type: ACTIONS.CHOOSE_OPERATION, payload: { digit: "+" } })}
+
+      >+
+      </button>
+      <DigitButton digit="7" dispatch={dispatch} />
+      <DigitButton digit="8" dispatch={dispatch} />
+      <DigitButton digit="9" dispatch={dispatch} />
+      <button
+        className="operator"
+        onClick={() => dispatch({ type: ACTIONS.CHOOSE_OPERATION, payload: { operator: "-" } })}
+
+      >-
+      </button>
+      <button
+        className="bottom-left-curve"
+        onClick={() => dispatch({ type: ACTIONS.CHOOSE_OPERATION, payload: { digit: "." } })}
+
+      >.
+      </button>
+      <DigitButton digit="0" dispatch={dispatch} />
+      <button
+        className="span-two bottom-right-curve operator"
+        onClick={() => dispatch({ type: ACTIONS.CHOOSE_OPERATION, payload: { operator: "=" } })}
+
+      >=
+      </button>
     </div>
   );
 }
