@@ -205,7 +205,7 @@ function App() {
       </button>
       <button
         className="bottom-left-curve"
-        onClick={() => dispatch({ type: ACTIONS.CHOOSE_OPERATION, payload: { digit: "." } })}
+        onClick={() => dispatch({ type: ACTIONS.ADD_DIGIT, payload: { digit: "." } })}
 
       >.
       </button>
