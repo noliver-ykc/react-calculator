@@ -1,5 +1,5 @@
 # Goals for this project
-I began this project in order to familiarize myself with react, particularily reducer.
+I began this project in order to familiarize myself with react concepts such as state and reducer.
 
 # Getting Started with Create React App
 
